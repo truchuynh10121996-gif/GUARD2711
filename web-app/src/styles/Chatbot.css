@@ -201,3 +201,49 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.voice-btn {
+  background: #F5F5F5 !important;
+  color: #2C3E50 !important;
+}
+
+.voice-btn:hover:not(:disabled) {
+  background: #E8E8E8 !important;
+}
+
+.voice-btn.listening {
+  background: #E74C3C !important;
+  color: white !important;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+}
+
+.listening-indicator {
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #FBD6E3 0%, #A9EDE9 100%);
+  text-align: center;
+  color: #2C3E50;
+  font-weight: 600;
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

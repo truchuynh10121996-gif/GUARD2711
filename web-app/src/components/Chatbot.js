@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { chatAPI } from '../services/api';
+import webSpeechService from '../services/speechService';
 import '../styles/Chatbot.css';
 
 function Chatbot() {
@@ -8,6 +9,7 @@ function Chatbot() {
   const [sessionId, setSessionId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isListening, setIsListening] = useState(false);
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -134,6 +136,50 @@ function Chatbot() {
     }
   };
 
+  // Handle voice input (Web Speech API)
+  const handleVoiceInput = async () => {
+    if (isListening) {
+      webSpeechService.stopListening();
+      setIsListening(false);
+      return;
+    }
+
+    if (!webSpeechService.getSupported()) {
+      alert('Speech recognition không được hỗ trợ trên trình duyệt này. Vui lòng sử dụng Chrome hoặc Edge.');
+      return;
+    }
+
+    try {
+      setIsListening(true);
+
+      const transcript = await webSpeechService.startListening(
+        'vi-VN',
+        (text) => {
+          // On result callback
+          setInputMessage(text);
+          setIsListening(false);
+        },
+        (error) => {
+          // On error callback
+          console.error('Voice input error:', error);
+          setIsListening(false);
+
+          if (error === 'no-speech') {
+            alert('Không phát hiện giọng nói. Vui lòng thử lại.');
+          } else if (error === 'not-allowed') {
+            alert('Vui lòng cấp quyền microphone để sử dụng tính năng này.');
+          }
+        }
+      );
+
+      setInputMessage(transcript);
+    } catch (error) {
+      console.error('Voice input error:', error);
+      setIsListening(false);
+      alert('Lỗi khi sử dụng voice input: ' + error.message);
+    }
+  };
+
   const getRiskBadge = (riskLevel) => {
     if (riskLevel === 'danger') {
       return <span className="risk-badge danger">🚨 Nguy hiểm</span>;
@@ -198,12 +244,26 @@ function Chatbot() {
           placeholder="Nhập câu hỏi hoặc mô tả tình huống..."
           value={inputMessage}
           onChange={(e) => setInputMessage(e.target.value)}
-          disabled={isLoading}
+          disabled={isLoading || isListening}
         />
+        <button
+          type="button"
+          className={`voice-btn ${isListening ? 'listening' : ''}`}
+          onClick={handleVoiceInput}
+          disabled={isLoading}
+          title="Nhấn để nói"
+        >
+          {isListening ? '⏹️' : '🎤'}
+        </button>
         <button type="submit" disabled={!inputMessage.trim() || isLoading}>
           ➤
         </button>
       </form>
+      {isListening && (
+        <div className="listening-indicator">
+          🎤 Đang nghe... Hãy nói câu hỏi của bạn
+        </div>
+      )}
     </div>
   );
 }

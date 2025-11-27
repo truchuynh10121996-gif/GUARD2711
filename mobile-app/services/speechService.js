@@ -1,5 +1,7 @@
 import * as Speech from 'expo-speech';
 import { Audio } from 'expo-av';
+import axios from 'axios';
+import { API_CONFIG } from '../constants/config';
 
 // Text-to-Speech Service
 export class TTSService {
@@ -70,7 +72,7 @@ export class TTSService {
   }
 }
 
-// Speech-to-Text Service (using device's built-in)
+// Speech-to-Text Service (using Google Cloud via backend)
 export class STTService {
   constructor() {
     this.recording = null;
@@ -138,6 +140,116 @@ export class STTService {
   // Get recording status
   getRecordingStatus() {
     return this.isRecording;
+  }
+
+  // Check if STT is available on backend
+  async checkSTTAvailability() {
+    try {
+      const response = await axios.get(`${API_CONFIG.BASE_URL}/speech/check`);
+      return response.data.available;
+    } catch (error) {
+      console.error('Check STT Error:', error);
+      return false;
+    }
+  }
+
+  // Transcribe audio file
+  async transcribeAudio(audioUri, languageCode = 'vi-VN') {
+    try {
+      console.log('📤 Uploading audio for transcription...');
+
+      // Create form data
+      const formData = new FormData();
+      formData.append('audio', {
+        uri: audioUri,
+        type: 'audio/m4a',
+        name: 'recording.m4a',
+      });
+      formData.append('languageCode', languageCode);
+
+      // Upload to backend
+      const response = await axios.post(
+        `${API_CONFIG.BASE_URL}/speech/transcribe`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          timeout: 30000, // 30 seconds
+        }
+      );
+
+      if (response.data.success) {
+        console.log('✅ Transcription:', response.data.transcription);
+        return response.data.transcription;
+      } else {
+        throw new Error(response.data.message || 'Transcription failed');
+      }
+    } catch (error) {
+      console.error('Transcribe Error:', error);
+      if (error.response) {
+        throw new Error(error.response.data.message || 'Failed to transcribe audio');
+      }
+      throw new Error('Network error. Please check your connection.');
+    }
+  }
+
+  // Record and transcribe (all-in-one)
+  async recordAndTranscribe(sessionId, languageCode = 'vi-VN') {
+    try {
+      // Start recording
+      await this.startRecording();
+
+      // Wait for user to stop (handled externally)
+      // This method should be called after stopRecording()
+
+      return true;
+    } catch (error) {
+      console.error('Record Error:', error);
+      throw error;
+    }
+  }
+
+  // Upload recorded audio and get AI response directly
+  async sendVoiceMessage(audioUri, sessionId, languageCode = 'vi-VN') {
+    try {
+      console.log('📤 Sending voice message...');
+
+      // Create form data
+      const formData = new FormData();
+      formData.append('audio', {
+        uri: audioUri,
+        type: 'audio/m4a',
+        name: 'voice-message.m4a',
+      });
+      formData.append('sessionId', sessionId);
+      formData.append('languageCode', languageCode);
+
+      // Upload to backend (transcribe + AI response)
+      const response = await axios.post(
+        `${API_CONFIG.BASE_URL}/speech/voice-message`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          timeout: 60000, // 60 seconds for AI processing
+        }
+      );
+
+      if (response.data.success) {
+        console.log('✅ Voice message processed');
+        return response.data.data;
+      } else {
+        throw new Error(response.data.message || 'Voice message failed');
+      }
+    } catch (error) {
+      console.error('Send Voice Message Error:', error);
+      if (error.response) {
+        throw new Error(error.response.data.message || 'Failed to process voice message');
+      }
+      throw new Error('Network error. Please check your connection and try again.');
+    }
   }
 }
 

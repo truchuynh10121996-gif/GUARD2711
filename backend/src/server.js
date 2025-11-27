@@ -9,6 +9,7 @@ const { errorHandler, notFound } = require('./middleware/errorHandler');
 const chatRoutes = require('./routes/chatRoutes');
 const scenarioRoutes = require('./routes/scenarioRoutes');
 const analyticsRoutes = require('./routes/analyticsRoutes');
+const speechRoutes = require('./routes/speechRoutes');
 
 // Initialize app
 const app = express();
@@ -38,6 +39,7 @@ app.get('/health', (req, res) => {
 app.use('/api/chat', chatRoutes);
 app.use('/api/scenarios', scenarioRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/speech', speechRoutes);
 
 // Welcome route
 app.get('/', (req, res) => {
@@ -49,6 +51,7 @@ app.get('/', (req, res) => {
       chat: '/api/chat',
       scenarios: '/api/scenarios',
       analytics: '/api/analytics',
+      speech: '/api/speech',
       health: '/health'
     }
   });

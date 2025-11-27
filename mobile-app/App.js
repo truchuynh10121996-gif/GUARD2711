@@ -140,11 +140,46 @@ export default function App() {
     } else {
       try {
         const audioUri = await sttService.stopRecording();
-        if (audioUri) {
-          Alert.alert(
-            'Ghi chú',
-            'Chức năng chuyển giọng nói thành văn bản cần tích hợp với Google Cloud Speech-to-Text API. Hiện tại vui lòng nhập văn bản.'
-          );
+        if (audioUri && sessionId) {
+          setIsLoading(true);
+
+          try {
+            // Send voice message (transcribe + AI response)
+            const result = await sttService.sendVoiceMessage(audioUri, sessionId, 'vi-VN');
+
+            // Add user message (transcribed text)
+            const userMessage = {
+              role: 'user',
+              content: result.transcription,
+              timestamp: new Date(),
+            };
+            setMessages((prev) => [...prev, userMessage]);
+
+            // Add bot response
+            const botMessage = {
+              role: 'assistant',
+              content: result.response,
+              timestamp: new Date(result.timestamp),
+              language: result.language,
+              isFraudDetected: result.isFraudDetected,
+              riskLevel: result.riskLevel,
+            };
+            setMessages((prev) => [...prev, botMessage]);
+
+            // Scroll to bottom
+            setTimeout(() => {
+              flatListRef.current?.scrollToEnd({ animated: true });
+            }, 100);
+
+          } catch (error) {
+            console.error('Voice Message Error:', error);
+            Alert.alert(
+              'Lỗi',
+              error.message || 'Không thể xử lý tin nhắn giọng nói. Vui lòng đảm bảo:\n1. Backend đang chạy\n2. Google Cloud STT đã được cấu hình'
+            );
+          } finally {
+            setIsLoading(false);
+          }
         }
       } catch (error) {
         console.error('Stop Recording Error:', error);
