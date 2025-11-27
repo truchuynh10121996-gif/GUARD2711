@@ -1,0 +1,111 @@
+[
+  {
+    "category": "phishing",
+    "question": "Tôi nhận được tin nhắn từ ngân hàng yêu cầu cập nhật thông tin tài khoản qua link, có nên làm không?",
+    "answer": "🚨 CẢNH BÁO: Đây là dấu hiệu lừa đảo PHISHING!\n\n❌ KHÔNG BAO GIỜ:\n- Nhấp vào link lạ từ SMS/Email\n- Cung cấp thông tin cá nhân qua link\n- Nhập mật khẩu vào website không rõ nguồn gốc\n\n✅ CÁCH XỬ LÝ AN TOÀN:\n1. Xóa tin nhắn ngay lập tức\n2. Gọi đến hotline chính thức của Agribank: 1900 558 868\n3. Truy cập trực tiếp website chính thức: agribank.com.vn\n4. Đến chi nhánh gần nhất để xác minh\n\n💡 LƯU Ý: Agribank KHÔNG BAO GIỜ yêu cầu khách hàng cập nhật thông tin qua SMS/Email.",
+    "language": "vi",
+    "keywords": ["link", "cập nhật", "thông tin", "sms", "email", "ngân hàng"],
+    "riskLevel": "danger",
+    "isActive": true,
+    "examples": [
+      "Có tin nhắn yêu cầu xác nhận tài khoản qua link",
+      "Email từ ngân hàng bảo cập nhật thông tin"
+    ]
+  },
+  {
+    "category": "phone_scam",
+    "question": "Có người gọi điện tự xưng là nhân viên ngân hàng yêu cầu tôi cung cấp mã OTP",
+    "answer": "🚨 LỪA ĐẢO NGHIÊM TRỌNG!\n\n❌ TUYỆT ĐỐI KHÔNG:\n- Cung cấp mã OTP cho bất kỳ ai\n- Tin tưởng người gọi điện tự xưng\n- Thực hiện giao dịch theo yêu cầu\n\n✅ HÀNH ĐỘNG NGAY:\n1. Cúp máy ngay lập tức\n2. KHÔNG chia sẻ mã OTP với bất kỳ ai, kể cả nhân viên ngân hàng\n3. Gọi lại hotline Agribank: 1900 558 868 để xác minh\n4. Đổi mật khẩu ngay nếu đã cung cấp thông tin\n5. Báo cảnh sát nếu đã chuyển tiền\n\n💡 NGUYÊN TẮC VÀNG: Mã OTP là chìa khóa tài khoản của bạn. Nhân viên ngân hàng KHÔNG BAO GIỜ yêu cầu mã OTP!",
+    "language": "vi",
+    "keywords": ["otp", "gọi điện", "nhân viên", "ngân hàng", "mã xác nhận"],
+    "riskLevel": "danger",
+    "isActive": true,
+    "examples": [
+      "Nhân viên ngân hàng gọi yêu cầu mã OTP",
+      "Điện thoại lạ hỏi mã xác nhận"
+    ]
+  },
+  {
+    "category": "fake_website",
+    "question": "Làm sao biết website ngân hàng có phải là website thật không?",
+    "answer": "✅ CÁCH NHẬN BIẾT WEBSITE CHÍNH THỨC:\n\n🔒 Kiểm tra URL:\n- Website chính thức: https://agribank.com.vn\n- Có biểu tượng ổ khóa (🔒) trước URL\n- Bắt đầu bằng \"https://\" (có chữ 's')\n\n⚠️ DẤU HIỆU WEBSITE GIẢ:\n- URL khác một chút: agribank.com, agribankk.com.vn, agriban.com\n- Không có https hoặc ổ khóa\n- Giao diện kém chất lượng\n- Yêu cầu thông tin không cần thiết\n- Lỗi chính tả nhiều\n\n💡 LỜI KHUYÊN:\n- Lưu bookmark website chính thức\n- Truy cập trực tiếp, không qua link\n- Sử dụng ứng dụng Agribank E-Mobile Banking chính thức",
+    "language": "vi",
+    "keywords": ["website", "link", "url", "giả mạo", "trang web"],
+    "riskLevel": "warning",
+    "isActive": true,
+    "examples": []
+  },
+  {
+    "category": "fake_investment",
+    "question": "Có người mời tôi đầu tư online hứa lãi suất cao, có đáng tin không?",
+    "answer": "🚨 CẢNH BÁO: Đầu tư ma - Lừa đảo đa cấp!\n\n❌ DẤU HIỆU LỪA ĐẢO:\n- Hứa lãi suất cao bất thường (5-10%/tháng)\n- Yêu cầu rủ thêm người để nhận hoa hồng\n- Không có giấy phép kinh doanh rõ ràng\n- Gây áp lực \"cơ hội có hạn\"\n- Thanh toán qua tài khoản cá nhân\n\n✅ BẢO VỆ BẢN THÂN:\n1. KHÔNG đầu tư vào các dự án hứa hẹn lợi nhuận quá cao\n2. Kiểm tra giấy phép kinh doanh tại website Ngân hàng Nhà nước\n3. Tham khảo ý kiến chuyên gia tài chính\n4. Chỉ đầu tư qua các kênh chính thức\n\n💡 QUY TẮC: \"Lợi nhuận cao = Rủi ro cao\". Không có công thức làm giàu nhanh!",
+    "language": "vi",
+    "keywords": ["đầu tư", "lãi suất cao", "online", "kiếm tiền", "hoa hồng"],
+    "riskLevel": "danger",
+    "isActive": true,
+    "examples": [
+      "Đầu tư 10 triệu nhận 1 triệu/tháng",
+      "Dự án đầu tư lợi nhuận 100%/năm"
+    ]
+  },
+  {
+    "category": "lottery_scam",
+    "question": "Tôi nhận được thông báo trúng thưởng 500 triệu đồng từ chương trình khuyến mãi",
+    "answer": "🚨 LỪA ĐẢO TRÚNG THƯỞNG GIẢ!\n\n❌ DẤU HIỆU NHẬN BIẾT:\n- Bạn không tham gia chương trình nào\n- Yêu cầu nộp phí trước khi nhận thưởng\n- Gửi thông tin qua SMS/Email lạ\n- Số tiền thưởng quá lớn, không hợp lý\n- Thời gian giới hạn gấp gáp\n\n✅ XỬ LÝ:\n1. KHÔNG chuyển tiền phí, lệ phí, thuế\n2. KHÔNG cung cấp thông tin cá nhân\n3. Xóa tin nhắn/email\n4. Kiểm tra trên website chính thức của tổ chức\n\n💡 NHỚ: Giải thưởng thật KHÔNG BAO GIỜ yêu cầu nộp phí trước!",
+    "language": "vi",
+    "keywords": ["trúng thưởng", "khuyến mãi", "giải thưởng", "nộp phí", "500 triệu"],
+    "riskLevel": "danger",
+    "isActive": true,
+    "examples": []
+  },
+  {
+    "category": "phishing",
+    "question": "I received an SMS asking me to update my bank account information via a link",
+    "answer": "🚨 PHISHING SCAM ALERT!\n\n❌ NEVER:\n- Click on suspicious links from SMS/Email\n- Provide personal information through links\n- Enter passwords on unverified websites\n\n✅ SAFE ACTIONS:\n1. Delete the message immediately\n2. Call Agribank official hotline: 1900 558 868\n3. Visit official website: agribank.com.vn\n4. Go to nearest branch for verification\n\n💡 NOTE: Agribank NEVER asks customers to update information via SMS/Email.",
+    "language": "en",
+    "keywords": ["link", "update", "information", "sms", "email", "bank"],
+    "riskLevel": "danger",
+    "isActive": true,
+    "examples": []
+  },
+  {
+    "category": "phone_scam",
+    "question": "Someone called claiming to be a bank employee and asked for my OTP code",
+    "answer": "🚨 SERIOUS FRAUD ALERT!\n\n❌ NEVER:\n- Share OTP code with anyone\n- Trust unknown callers\n- Follow their instructions\n\n✅ IMMEDIATE ACTIONS:\n1. Hang up immediately\n2. NEVER share OTP with anyone, even bank staff\n3. Call Agribank hotline: 1900 558 868\n4. Change password if you shared information\n5. Report to police if money transferred\n\n💡 GOLDEN RULE: OTP is your account key. Bank employees NEVER ask for OTP!",
+    "language": "en",
+    "keywords": ["otp", "phone call", "employee", "bank", "verification code"],
+    "riskLevel": "danger",
+    "isActive": true,
+    "examples": []
+  },
+  {
+    "category": "social_engineering",
+    "question": "ខ្ញុំទទួលបានសារតាមទូរស័ព្ទដែលបានស្នើសុំឱ្យធ្វើបច្ចុប្បន្នភាពព័ត៌មានគណនី",
+    "answer": "🚨 ការព្រមានអំពីការក្លែងបន្លំ!\n\n❌ កុំធ្វើ:\n- ចុចលើតំណភ្ជាប់ពីសារ\n- ផ្តល់ព័ត៌មានផ្ទាល់ខ្លួន\n- បញ្ចូលពាក្យសម្ងាត់\n\n✅ សកម្មភាពសុវត្ថិភាព:\n1. លុបសារភ្លាមៗ\n2. ទូរស័ព្ទទៅ Agribank: 1900 558 868\n3. ចូលគេហទំព័រផ្លូវការ: agribank.com.vn\n\n💡 ចំណាំ: Agribank មិនដែលស្នើសុំព័ត៌មានតាមសារទេ!",
+    "language": "km",
+    "keywords": ["ការក្លែងបន្លំ", "សារ", "ព័ត៌មាន", "គណនី"],
+    "riskLevel": "danger",
+    "isActive": true,
+    "examples": []
+  },
+  {
+    "category": "fake_support",
+    "question": "Có email tự xưng là bộ phận chăm sóc khách hàng yêu cầu tôi xác nhận giao dịch",
+    "answer": "⚠️ CẢNH BÁO: Giả mạo chăm sóc khách hàng!\n\n❌ KHÔNG ĐƯỢC:\n- Trả lời email lạ\n- Xác nhận giao dịch không rõ nguồn gốc\n- Cung cấp thông tin theo yêu cầu\n\n✅ KIỂM TRA:\n1. Xem lại lịch sử giao dịch trong app Agribank\n2. Gọi hotline chính thức: 1900 558 868\n3. Kiểm tra email gửi: phải từ @agribank.com.vn\n\n💡 Agribank chỉ liên hệ qua:\n- Email chính thức: @agribank.com.vn\n- Hotline: 1900 558 868\n- App: Agribank E-Mobile Banking",
+    "language": "vi",
+    "keywords": ["email", "chăm sóc khách hàng", "xác nhận", "giao dịch"],
+    "riskLevel": "warning",
+    "isActive": true,
+    "examples": []
+  },
+  {
+    "category": "identity_theft",
+    "question": "Làm sao để bảo vệ thông tin cá nhân khi sử dụng ngân hàng online?",
+    "answer": "✅ BẢO VỆ THÔNG TIN CÁ NHÂN:\n\n🔐 MẬT KHẨU AN TOÀN:\n- Dài ít nhất 8-12 ký tự\n- Kết hợp chữ, số, ký tự đặc biệt\n- Không dùng thông tin dễ đoán (ngày sinh, số điện thoại)\n- Thay đổi định kỳ 3-6 tháng\n- Không dùng chung cho nhiều tài khoản\n\n🛡️ BẢO MẬT:\n- Bật xác thực 2 yếu tố (2FA)\n- Không lưu mật khẩu trên trình duyệt\n- Đăng xuất sau mỗi phiên giao dịch\n- Không sử dụng WiFi công cộng\n\n📱 THIẾT BỊ:\n- Cài đặt antivirus\n- Cập nhật hệ điều hành thường xuyên\n- Không root/jailbreak điện thoại\n- Khóa màn hình bằng sinh trắc học\n\n💡 Thông tin cá nhân là tài sản quý giá nhất!",
+    "language": "vi",
+    "keywords": ["bảo vệ", "thông tin", "cá nhân", "mật khẩu", "an toàn"],
+    "riskLevel": "safe",
+    "isActive": true,
+    "examples": []
+  }
+]
