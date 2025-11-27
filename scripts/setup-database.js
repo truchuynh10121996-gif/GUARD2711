@@ -16,20 +16,36 @@ const setupDatabase = async () => {
   try {
     console.log('🚀 Bắt đầu khởi tạo database...\n');
 
+    // Tắt buffering TRƯỚC KHI connect - FIX TIMEOUT ISSUE
+    mongoose.set('bufferCommands', false);
+    mongoose.set('autoIndex', false); // Tắt auto-index, tạo manual sau
+
     // Connect to MongoDB with improved connection options
     await mongoose.connect(process.env.MONGODB_URI, {
       serverSelectionTimeoutMS: 30000,  // Tăng timeout lên 30s
       socketTimeoutMS: 60000,            // Socket timeout 60s
       connectTimeoutMS: 30000,           // Connect timeout 30s
       maxPoolSize: 10,                   // Connection pool size
+      bufferCommands: false,             // TẮT BUFFERING - quan trọng!
+      bufferTimeoutMS: 60000,            // Buffer timeout nếu buffering bật
     });
-    console.log('✅ Đã kết nối MongoDB\n');
 
-    // Đợi connection hoàn toàn sẵn sàng
-    if (mongoose.connection.readyState !== 1) {
-      console.log('⏳ Đợi kết nối ổn định...');
+    console.log('✅ Đã kết nối MongoDB');
+
+    // Đợi connection thực sự sẵn sàng
+    const maxRetries = 5;
+    let retries = 0;
+    while (mongoose.connection.readyState !== 1 && retries < maxRetries) {
+      console.log(`⏳ Đợi kết nối ổn định... (${retries + 1}/${maxRetries})`);
       await new Promise(resolve => setTimeout(resolve, 2000));
+      retries++;
     }
+
+    if (mongoose.connection.readyState !== 1) {
+      throw new Error('MongoDB connection không ổn định sau ' + maxRetries + ' lần thử');
+    }
+
+    console.log('✅ Kết nối MongoDB ổn định\n');
 
     // Clear existing data (optional - uncomment nếu muốn xóa dữ liệu cũ)
     // await Scenario.deleteMany({});
@@ -38,15 +54,32 @@ const setupDatabase = async () => {
     // ✨ Tạo indexes trước khi insert data (fix timeout issue)
     console.log('⏳ Đang tạo database indexes...');
     try {
-      await Scenario.collection.createIndex({ question: 'text', keywords: 'text' });
-      await Scenario.collection.createIndex({ category: 1, language: 1 });
-      console.log('✅ Đã tạo indexes\n');
+      // Sử dụng native MongoDB driver với maxTimeMS cao
+      const db = mongoose.connection.db;
+      const scenariosCollection = db.collection('scenarios');
+
+      // Tạo text search index với timeout cao
+      await scenariosCollection.createIndex(
+        { question: 'text', keywords: 'text' },
+        { maxTimeMS: 60000 } // 60s timeout
+      );
+      console.log('   ✓ Đã tạo text search index');
+
+      // Tạo compound index
+      await scenariosCollection.createIndex(
+        { category: 1, language: 1 },
+        { maxTimeMS: 60000 }
+      );
+      console.log('   ✓ Đã tạo compound index');
+
+      console.log('✅ Đã tạo tất cả indexes\n');
     } catch (indexError) {
       // Indexes có thể đã tồn tại, bỏ qua lỗi
-      if (indexError.code !== 85 && indexError.code !== 86) {
+      if (indexError.code === 85 || indexError.code === 86 || indexError.codeName === 'IndexOptionsConflict') {
+        console.log('ℹ️  Indexes đã tồn tại, bỏ qua\n');
+      } else {
         throw indexError;
       }
-      console.log('ℹ️  Indexes đã tồn tại\n');
     }
 
     // Load scenarios from JSON
@@ -55,15 +88,22 @@ const setupDatabase = async () => {
 
     // Import scenarios với batch processing để tránh timeout
     console.log(`⏳ Đang import ${scenariosData.length} scenarios...`);
-    const BATCH_SIZE = 50;
+    const BATCH_SIZE = 100; // Tăng batch size vì đã tắt buffering
     let totalInserted = 0;
+
+    // Sử dụng native MongoDB driver cho insert
+    const db = mongoose.connection.db;
+    const scenariosCollection = db.collection('scenarios');
 
     for (let i = 0; i < scenariosData.length; i += BATCH_SIZE) {
       const batch = scenariosData.slice(i, i + BATCH_SIZE);
-      await Scenario.insertMany(batch, {
+
+      // Insert với native driver và timeout cao
+      await scenariosCollection.insertMany(batch, {
         ordered: false,  // Tiếp tục insert ngay cả khi có lỗi
-        rawResult: false
+        maxTimeMS: 60000 // 60s timeout cho mỗi batch
       });
+
       totalInserted += batch.length;
       console.log(`   ✓ Đã import ${totalInserted}/${scenariosData.length} scenarios`);
     }
