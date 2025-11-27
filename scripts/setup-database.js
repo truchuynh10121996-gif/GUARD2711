@@ -19,8 +19,8 @@ const setupDatabase = async () => {
     // Connect to MongoDB with proper connection options
     await mongoose.connect(process.env.MONGODB_URI, {
       serverSelectionTimeoutMS: 30000,  // Tăng timeout lên 30s
-      socketTimeoutMS: 45000,            // Socket timeout 45s
-      // Đã xóa bufferCommands: false để Mongoose tự động quản lý buffering
+      socketTimeoutMS: 75000,            // Tăng socket timeout lên 75s
+      connectTimeoutMS: 30000,           // Connection timeout
     });
 
     // Đợi connection thực sự sẵn sàng
@@ -35,14 +35,31 @@ const setupDatabase = async () => {
     console.log('✅ Đã kết nối MongoDB\n');
     console.log(`📊 Connection state: ${mongoose.connection.readyState} (1 = connected)\n`);
 
+    // Test database thực sự hoạt động
+    console.log('🔍 Đang kiểm tra database...');
+    await mongoose.connection.db.admin().ping();
+    console.log('✅ Database đang hoạt động bình thường\n');
+
     // Clear existing data (optional - uncomment nếu muốn xóa dữ liệu cũ)
     // await Scenario.deleteMany({});
     // console.log('🗑️  Đã xóa scenarios cũ\n');
 
-    // Tạo indexes trước khi insert data để tránh lỗi
+    // Tạo indexes với timeout và error handling
     console.log('🔧 Đang tạo indexes...');
-    await Scenario.createIndexes();
-    console.log('✅ Đã tạo indexes\n');
+    try {
+      // Sử dụng Promise.race để thêm timeout cho createIndexes
+      await Promise.race([
+        Scenario.createIndexes(),
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('Index creation timeout')), 60000)
+        )
+      ]);
+      console.log('✅ Đã tạo indexes\n');
+    } catch (indexError) {
+      // Nếu tạo indexes thất bại, tiếp tục vì indexes sẽ tự động tạo khi insert
+      console.log('⚠️  Không thể tạo indexes ngay (sẽ tự động tạo khi insert data)\n');
+      console.log(`   Lý do: ${indexError.message}\n`);
+    }
 
     // Load scenarios from JSON
     const scenariosPath = path.join(__dirname, '../shared/scenarios/initial-scenarios.json');
