@@ -16,8 +16,12 @@ const setupDatabase = async () => {
   try {
     console.log('🚀 Bắt đầu khởi tạo database...\n');
 
-    // Connect to MongoDB
-    await mongoose.connect(process.env.MONGODB_URI);
+    // Connect to MongoDB with connection options
+    await mongoose.connect(process.env.MONGODB_URI, {
+      serverSelectionTimeoutMS: 30000,  // Tăng timeout lên 30s
+      socketTimeoutMS: 45000,            // Socket timeout 45s
+      bufferCommands: false              // Tắt buffering để tránh timeout
+    });
     console.log('✅ Đã kết nối MongoDB\n');
 
     // Clear existing data (optional - uncomment nếu muốn xóa dữ liệu cũ)

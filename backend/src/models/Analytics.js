@@ -3,8 +3,7 @@ const mongoose = require('mongoose');
 const analyticsSchema = new mongoose.Schema({
   date: {
     type: Date,
-    required: true,
-    index: true
+    required: true
   },
   metrics: {
     totalConversations: {
