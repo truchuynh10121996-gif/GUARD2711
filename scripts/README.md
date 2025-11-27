@@ -1,5 +1,29 @@
 # Database Setup Scripts
 
+## 🚀 Quick Start
+
+### Bước 1: Test MongoDB Connection (QUAN TRỌNG!)
+
+**Chạy script test TRƯỚC để đảm bảo MongoDB hoạt động:**
+
+```bash
+node scripts/test-mongodb-connection.js
+```
+
+Nếu test thành công, bạn sẽ thấy:
+```
+✅ THÀNH CÔNG! MongoDB hoạt động bình thường.
+💡 Bạn có thể chạy: node scripts/setup-database.js
+```
+
+### Bước 2: Khởi tạo Database
+
+```bash
+node scripts/setup-database.js
+```
+
+---
+
 ## Yêu cầu trước khi chạy
 
 ### 1. Đảm bảo MongoDB đang chạy
